@@ -1,1 +1,2 @@
 from .part import BluetoothGameController
+from .xbox_controller_part import XboxGameController

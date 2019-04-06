@@ -4,11 +4,11 @@ from evdev import ecodes
 from itertools import cycle
 import os
 import time
-from part import BluetoothDevice
+from .part import BluetoothDevice
 
 THROTTLE_MAX = 1023  # 0-1023
-ANGLE_MAX = 65535  # 0 - 65535
-HALF_ANGLE_MAX = 65536 // 2
+ANGLE_MAX = 65536
+HALF_ANGLE_MAX = ANGLE_MAX // 2 # 0 - 65535
 
 
 class XboxGameController(BluetoothDevice):
@@ -74,6 +74,9 @@ class XboxGameController(BluetoothDevice):
                 if self.device is not None:
                     self.run()
 
+    def update(self):
+        self.run()
+
     def run_threaded(self, img_arr=None):
         return self.angle, self.throttle, self.drive_mode, self.recording
 
@@ -84,7 +87,7 @@ class XboxGameController(BluetoothDevice):
     def update_angle(self, event):
         value = self.clamp(event.value, 0, ANGLE_MAX)
         value -= HALF_ANGLE_MAX
-        self.angle = value / ANGLE_MAX
+        self.angle = value / HALF_ANGLE_MAX
 
     def update_throttle(self, event):
         value = self.clamp(event.value, 0, THROTTLE_MAX)
