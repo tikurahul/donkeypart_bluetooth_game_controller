@@ -35,7 +35,7 @@ class XboxGameController(BluetoothDevice):
     def update_state(self, event):
         if self.verbose == True:
             print(evdev.categorize(event))
-        if event.code == evdev.ecodes.ABS_RZ:
+        if event.code == evdev.ecodes.ABS_RZ or event.code == evdev.ecodes.ABS_GAS:
             # Gas
             self.update_throttle(event)
         elif event.code == evdev.ecodes.BTN_A:
